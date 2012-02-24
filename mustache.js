@@ -1,13 +1,14 @@
 /*!
  * mustache.js - Logic-less {{mustache}} templates with JavaScript
- * http://github.com/janl/mustache.js
+ * https://github.com/groupon/mustache.js
+ * Fork of http://github.com/janl/mustache.js
  */
 var Mustache = (typeof module !== "undefined" && module.exports) || {};
 
 (function (exports) {
 
   exports.name = "mustache.js";
-  exports.version = "0.5.0-dev";
+  exports.version = "0.5.1-groupon-dev";
   exports.tags = ["{{", "}}"];
   exports.parse = parse;
   exports.compile = compile;
@@ -536,6 +537,12 @@ var Mustache = (typeof module !== "undefined" && module.exports) || {};
     return compile(template)(view, partials);
   }
 
+  /**
+   * Register a global helper function that may be used in any template.
+   * Helper receives the section's literal block of text, un-rendered, as its
+   * first argument. The second argument is a special rendering function that
+   * uses the current view as its view argument.
+   */
   function registerHelper(name, helper) {
     helpers[name] = function() {
       return helper;
