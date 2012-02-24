@@ -13,6 +13,7 @@ var Mustache = (typeof module !== "undefined" && module.exports) || {};
   exports.compile = compile;
   exports.render = render;
   exports.clearCache = clearCache;
+  exports.registerHelper = registerHelper;
 
   // This is here for backwards compatibility with 0.4.x.
   exports.to_html = function (template, view, partials, send) {
@@ -24,6 +25,8 @@ var Mustache = (typeof module !== "undefined" && module.exports) || {};
       return result;
     }
   };
+
+  var helpers = {};
 
   var _toString = Object.prototype.toString;
   var _isArray = Array.isArray;
@@ -479,7 +482,7 @@ var Mustache = (typeof module !== "undefined" && module.exports) || {};
     return function (view, partials) {
       partials = partials || {};
 
-      var stack = [view]; // context stack
+      var stack = [helpers, view]; // context stack
 
       try {
         return fn(view, partials, stack, lookup, escapeHTML, renderSection, render);
@@ -531,6 +534,12 @@ var Mustache = (typeof module !== "undefined" && module.exports) || {};
    */
   function render(template, view, partials) {
     return compile(template)(view, partials);
+  }
+
+  function registerHelper(name, helper) {
+    helpers[name] = function() {
+      return helper;
+    };
   }
 
 })(Mustache);
